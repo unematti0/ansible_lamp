@@ -10,7 +10,7 @@
         update_cache: yes
         upgrade: dist
       register: apt_update
-      changed_when: apt_update.cache_updated or apt_update.upgraded
+      when: apt_update.cache_updated or apt_update.upgraded
 
     - name: "Install basic packages"
       apt:
