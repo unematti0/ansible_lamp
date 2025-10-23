@@ -1,0 +1,42 @@
+---
+
+student_username: "kasutaja"
+server_ip: "192.168.82.10"
+domain_name: "lamp.local"
+server_admin: "webmaster@{{ domain_name }}"
+document_root: "/var/www/{{ domain_name }}/html"
+
+# MySQL 
+mysql_host: "127.0.0.1"
+mysql_database: "lamp_app"
+mysql_user: "lamp_user"
+# mysql_password ei tohi olla siin, kasuta vaulti või vars_prompt
+php_packages:
+  - php
+  - php-cli
+  - php-fpm
+  - libapache2-mod-php
+  - php-mysql
+  - php-curl
+  - php-gd
+  - php-mbstring
+  - php-xml
+  - php-zip
+
+# Apache
+apache_modules:
+  - rewrite
+  - ssl
+  - headers
+
+# Firewall pordid
+open_ports:
+  - 22
+  - 80
+  - 443
+
+# Ajavöönd
+timezone: "Europe/Tallinn"
+
+# Testi URL (kasulik uri testi jaoks)
+test_url: "http://{{ server_ip }}"

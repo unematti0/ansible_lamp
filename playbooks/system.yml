@@ -1,0 +1,49 @@
+---
+- name: "System preparation"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+  tasks:
+    - name: "Update apt cache and upgrade"
+      apt:
+        update_cache: yes
+        upgrade: dist
+      register: apt_update
+      changed_when: apt_update.cache_updated or apt_update.upgraded
+
+    - name: "Install basic packages"
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+          - unzip
+          - software-properties-common
+          - python3-pip
+        state: present
+
+    - name: "Ensure python3-apt installed"
+      apt:
+        name: python3-apt
+        state: present
+
+    - name: "Set timezone"
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: "Enable UFW"
+      apt:
+        name: ufw
+        state: present
+
+    - name: "Allow required ports"
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop: "{{ open_ports }}"
+
+    - name: "Enable ufw (allow all interactive prompts)"
+      ufw:
+        state: enabled
+        policy: allow

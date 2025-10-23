@@ -1,0 +1,62 @@
+---
+- name: "MySQL setup"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+
+  vars_prompt:
+    - name: "mysql_root_password"
+      prompt: "Enter MySQL root password"
+      private: true
+    - name: "mysql_app_password"
+      prompt: "Enter application DB password"
+      private: true
+
+  tasks:
+    - name: "Install MySQL server and python libs"
+      apt:
+        name:
+          - mysql-server
+          - python3-pymysql
+        state: present
+
+    - name: "Ensure MySQL service is started and enabled"
+      service:
+        name: mysql
+        state: started
+        enabled: true
+
+    - name: "Secure MySQL: ensure root password is set"
+      mysql_user:
+        login_user: root
+        login_password: ""
+        user: root
+        host_all: true
+        password: "{{ mysql_root_password }}"
+      ignore_errors: true
+      register: set_root_password
+      failed_when: false
+
+    - name: "Ensure root can login with password (wait for restart if needed)"
+      wait_for:
+        port: 3306
+        state: started
+        delay: 3
+        timeout: 30
+
+    - name: "Create application database"
+      mysql_db:
+        name: "{{ mysql_database }}"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+    - name: "Create application user with privileges"
+      mysql_user:
+        name: "{{ mysql_user }}"
+        password: "{{ mysql_app_password }}"
+        priv: "{{ mysql_database }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"

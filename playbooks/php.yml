@@ -1,0 +1,33 @@
+---
+- name: "PHP setup"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+  handlers:
+    - name: restart apache
+      service:
+        name: apache2
+        state: restarted
+  tasks:
+    - name: "Install PHP and extensions"
+      apt:
+        name: "{{ php_packages }}"
+        state: present
+      notify: restart apache
+
+    - name: "Create PHP test page"
+      template:
+        src: ../templates/index.php.j2
+        dest: "{{ document_root }}/index.php"
+        owner: www-data
+        group: www-data
+        mode: '0644'
+      notify: restart apache
+
+    - name: "Ensure document root index permissions"
+      file:
+        path: "{{ document_root }}"
+        recurse: yes
+        owner: www-data
+        group: www-data

@@ -1,0 +1,17 @@
+<?php
+echo "<h1>LAMP Stack Test for {{ domain_name }}</h1>";
+echo "<p>Server: " . gethostname() . "</p>";
+echo "<p>PHP Version: " . phpversion() . "</p>";
+
+$host = "{{ mysql_host }}";
+$user = "{{ mysql_user }}";
+$pass = "{{ mysql_password | default('') }}";
+$db = "{{ mysql_database }}";
+
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    echo "<p style='color:green'>MySQL connection: OK</p>";
+} catch(PDOException $e) {
+    echo "<p style='color:red'>MySQL connection: FAILED - " . htmlspecialchars($e->getMessage()) . "</p>";
+}
+?>
