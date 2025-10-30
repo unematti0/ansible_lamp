@@ -2,16 +2,15 @@
 - name: "MySQL setup"
   hosts: lamp_servers
   become: true
-  vars_files:
-    - ../group_vars/all/main.yml
 
   vars_prompt:
-    - name: "mysql_root_password"
+    - name: mysql_root_password
       prompt: "Enter MySQL root password"
-      private: true
-    - name: "mysql_app_password"
+      private: yes
+
+    - name: mysql_app_password
       prompt: "Enter application DB password"
-      private: true
+      private: yes
 
   tasks:
     - name: "Install MySQL server and python libs"
@@ -20,30 +19,22 @@
           - mysql-server
           - python3-pymysql
         state: present
+        update_cache: yes
 
     - name: "Ensure MySQL service is started and enabled"
       service:
         name: mysql
         state: started
-        enabled: true
+        enabled: yes
 
-    - name: "Secure MySQL: ensure root password is set"
+    - name: "Allow root login with password (disable unix_socket auth)"
       mysql_user:
-        login_user: root
-        login_password: ""
-        user: root
-        host_all: true
+        name: root
+        host: localhost
         password: "{{ mysql_root_password }}"
-      ignore_errors: true
-      register: set_root_password
-      failed_when: false
-
-    - name: "Ensure root can login with password (wait for restart if needed)"
-      wait_for:
-        port: 3306
-        state: started
-        delay: 3
-        timeout: 30
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        priv: '*.*:ALL,GRANT'
+        state: present
 
     - name: "Create application database"
       mysql_db:
@@ -52,11 +43,12 @@
         login_user: root
         login_password: "{{ mysql_root_password }}"
 
-    - name: "Create application user with privileges"
+    - name: "Create application DB user"
       mysql_user:
         name: "{{ mysql_user }}"
         password: "{{ mysql_app_password }}"
         priv: "{{ mysql_database }}.*:ALL"
+        host: "%"
         state: present
         login_user: root
         login_password: "{{ mysql_root_password }}"

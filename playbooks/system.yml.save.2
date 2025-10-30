@@ -1,3 +1,5 @@
+
+
 ---
 - name: "System preparation"
   hosts: lamp_servers
@@ -5,16 +7,11 @@
   vars_files:
     - ../group_vars/all/main.yml
   tasks:
-    - name: "Update apt cache and upgrade system"
+    - name: "Update apt cache and upgrade"
       apt:
         update_cache: yes
         upgrade: dist
       register: apt_update
-
-
-    - name: "Reboot if upgradfe changed system packages"
-      reboot:
-        msg: "Rebooting after upgrade"
       when: apt_update is changed
 
     - name: "Install basic packages"
@@ -26,10 +23,12 @@
           - unzip
           - software-properties-common
           - python3-pip
-          - python3-apt
         state: present
-        update_cache: yes
 
+    - name: "Ensure python3-apt installed"
+      apt:
+        name: python3-apt
+        state: present
 
     - name: "Set timezone"
       timezone:

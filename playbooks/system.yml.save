@@ -1,0 +1,357 @@
+---
+- name: "System preparation"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+
+  tasks:
+    - name: "Update apt cache and upgrade system"
+      apt:
+        update_cache: yes
+        upgrade: dist
+      register: apt_update
+
+    - name: "Reboot if upgrade changed system packages"
+      reboot:
+        msg: "Rebooting after upgrade"
+      when: apt_update is changed
+
+    - name: "Install basic packages"
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+          - unzip
+          - software-properties-common
+          - python3-pip
+          - python3-apt
+        state: present
+        update_cache: yes
+
+    - name: "Set timezone"
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: "Install UFW (firewall)"
+      apt:
+        name: ufw
+        state: present
+
+    - name: "Allow required ports"
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop: "{{ open_ports }}"
+
+    - name: "Enable UFW"
+      ufw:
+        state: enabled
+        policy: allow
+1~---
+- name: "System preparation"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+
+  tasks:
+    - name: "Update apt cache and upgrade system"
+      apt:
+        update_cache: yes
+        upgrade: dist
+      register: apt_update
+
+    - name: "Reboot if upgrade changed system packages"
+      reboot:
+        msg: "Rebooting after upgrade"
+      when: apt_update is changed
+
+    - name: "Install basic packages"
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+          - unzip
+          - software-properties-common
+          - python3-pip
+          - python3-apt
+        state: present
+        update_cache: yes
+
+    - name: "Set timezone"
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: "Install UFW (firewall)"
+      apt:
+        name: ufw
+        state: present
+
+    - name: "Allow required ports"
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop: "{{ open_ports }}"
+
+    - name: "Enable UFW"
+      ufw:
+        state: enabled
+        policy: allow
+1~---
+- name: "System preparation"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+
+  tasks:
+    - name: "Update apt cache and upgrade system"
+      apt:
+        update_cache: yes
+        upgrade: dist
+      register: apt_update
+
+    - name: "Reboot if upgrade changed system packages"
+      reboot:
+        msg: "Rebooting after upgrade"
+      when: apt_update is changed
+
+    - name: "Install basic packages"
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+          - unzip
+          - software-properties-common
+          - python3-pip
+          - python3-apt
+        state: present
+        update_cache: yes
+
+    - name: "Set timezone"
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: "Install UFW (firewall)"
+      apt:
+        name: ufw
+        state: present
+
+    - name: "Allow required ports"
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop: "{{ open_ports }}"
+
+    - name: "Enable UFW"
+      ufw:
+        state: enabled
+        policy: allow
+1~---
+- name: "System preparation"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+
+  tasks:
+    - name: "Update apt cache and upgrade system"
+      apt:
+        update_cache: yes
+        upgrade: dist
+      register: apt_update
+
+    - name: "Reboot if upgrade changed system packages"
+      reboot:
+        msg: "Rebooting after upgrade"
+      when: apt_update is changed
+
+    - name: "Install basic packages"
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+          - unzip
+          - software-properties-common
+          - python3-pip
+          - python3-apt
+        state: present
+        update_cache: yes
+
+    - name: "Set timezone"
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: "Install UFW (firewall)"
+      apt:
+        name: ufw
+        state: present
+
+    - name: "Allow required ports"
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop: "{{ open_ports }}"
+
+    - name: "Enable UFW"
+      ufw:
+        state: enabled
+        policy: allow
+1~---
+- name: "System preparation"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+
+  tasks:
+    - name: "Update apt cache and upgrade system"
+      apt:
+        update_cache: yes
+        upgrade: dist
+      register: apt_update
+
+    - name: "Reboot if upgrade changed system packages"
+      reboot:
+        msg: "Rebooting after upgrade"
+      when: apt_update is changed
+
+    - name: "Install basic packages"
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+          - unzip
+          - software-properties-common
+          - python3-pip
+          - python3-apt
+        state: present
+        update_cache: yes
+
+    - name: "Set timezone"
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: "Install UFW (firewall)"
+      apt:
+        name: ufw
+        state: present
+
+    - name: "Allow required ports"
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop: "{{ open_ports }}"
+
+    - name: "Enable UFW"
+      ufw:
+        state: enabled
+        policy: allow
+1~---
+- name: "System preparation"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+
+  tasks:
+    - name: "Update apt cache and upgrade system"
+      apt:
+        update_cache: yes
+        upgrade: dist
+      register: apt_update
+
+    - name: "Reboot if upgrade changed system packages"
+      reboot:
+        msg: "Rebooting after upgrade"
+      when: apt_update is changed
+
+    - name: "Install basic packages"
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+          - unzip
+          - software-properties-common
+          - python3-pip
+          - python3-apt
+        state: present
+        update_cache: yes
+
+    - name: "Set timezone"
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: "Install UFW (firewall)"
+      apt:
+        name: ufw
+        state: present
+
+    - name: "Allow required ports"
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop: "{{ open_ports }}"
+
+    - name: "Enable UFW"
+      ufw:
+        state: enabled
+        policy: allow
+1~---
+- name: "System preparation"
+  hosts: lamp_servers
+  become: true
+  vars_files:
+    - ../group_vars/all/main.yml
+
+  tasks:
+    - name: "Update apt cache and upgrade system"
+      apt:
+        update_cache: yes
+        upgrade: dist
+      register: apt_update
+
+    - name: "Reboot if upgrade changed system packages"
+      reboot:
+        msg: "Rebooting after upgrade"
+      when: apt_update is changed
+
+    - name: "Install basic packages"
+      apt:
+        name:
+          - curl
+          - vim
+          - git
+          - unzip
+          - software-properties-common
+          - python3-pip
+          - python3-apt
+        state: present
+        update_cache: yes
+
+    - name: "Set timezone"
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: "Install UFW (firewall)"
+      apt:
+        name: ufw
+        state: present
+
+    - name: "Allow required ports"
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop: "{{ open_ports }}"
+
+    - name: "Enable UFW"
+      ufw:
+        state: enabled
+        policy: allow
